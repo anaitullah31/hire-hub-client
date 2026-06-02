@@ -58,14 +58,14 @@ export default function Navbar() {
           <div className="h-6 w-px bg-white/10" />
 
           <Link
-            href="/login"
+            href="/signin"
             className="text-sm font-medium text-gray-300 hover:text-violet-400"
           >
             Sign In
           </Link>
 
           <Link
-            href="/register"
+            href="/singup"
             className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black"
           >
             Get Started
