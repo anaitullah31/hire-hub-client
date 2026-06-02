@@ -3,9 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { authClient } from "../lib/auth-client";
+import { Button } from "@heroui/react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
+  console.log(user);
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -22,6 +28,15 @@ export default function Navbar() {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+
+    router.push("/signin");
+    router.refresh();
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur-xl">
@@ -57,19 +72,25 @@ export default function Navbar() {
 
           <div className="h-6 w-px bg-white/10" />
 
-          <Link
-            href="/signin"
-            className="text-sm font-medium text-gray-300 hover:text-violet-400"
-          >
-            Sign In
-          </Link>
+          {user ? (
+            <Button onClick={handleSignOut} color="danger" variant="flat">
+              Sign Out
+            </Button>
+          ) : (
+            <Link
+              href="/signin"
+              className="text-sm font-medium text-gray-300 hover:text-violet-400"
+            >
+              Sign In
+            </Link>
+          )}
 
-          <Link
+          {/* <Link
             href="/singup"
             className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black"
           >
             Get Started
-          </Link>
+          </Link> */}
         </div>
 
         {/* Mobile Button */}
