@@ -11,7 +11,6 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
-  console.log(user);
 
   const navLinks = [
     { label: "Home", href: "/" },

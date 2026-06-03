@@ -14,6 +14,7 @@ export default function SignupPage() {
     email: "",
     password: "",
     image: "",
+    role: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -42,6 +43,7 @@ export default function SignupPage() {
         email: formData.email,
         password: formData.password,
         image: formData.image,
+        role: formData.role,
       });
 
       if (error) {
@@ -124,6 +126,37 @@ export default function SignupPage() {
               variant="bordered"
               className="w-full"
             />
+
+            <div>
+              <div className="flex h-12 items-center gap-6 rounded-xl bg-[#18181b] px-4 text-white">
+                <label className="block text-sm font-medium text-white">
+                  Role
+                </label>
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="job-seaker"
+                    checked={formData.role === "job-seaker"}
+                    onChange={handleChange}
+                    className="h-4 w-4 accent-violet-600"
+                  />
+                  <span>Job Seaker</span>
+                </label>
+
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="recruiter"
+                    checked={formData.role === "recruiter"}
+                    onChange={handleChange}
+                    className="h-4 w-4 accent-violet-600"
+                  />
+                  <span>Recruiter</span>
+                </label>
+              </div>
+            </div>
 
             <Input
               required
