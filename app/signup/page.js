@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Card, Input } from "@heroui/react";
 import { authClient } from "../lib/auth-client";
 
 export default function SignupPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const redirectTo = searchParams.get("redirect" || "/login");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -54,7 +57,7 @@ export default function SignupPage() {
       setSuccessMessage("Account created successfully!");
 
       setTimeout(() => {
-        router.push("/signin");
+        router.push(redirectTo);
       }, 1200);
     } catch (error) {
       setErrorMessage(error.message || "Something went wrong.");
@@ -182,7 +185,10 @@ export default function SignupPage() {
 
           <p className="mt-6 text-center text-sm text-gray-400">
             Already have an account?{" "}
-            <Link href="/signin" className="font-medium text-violet-400">
+            <Link
+              href={`/signin?redirect=${redirectTo}`}
+              className="font-medium text-violet-400"
+            >
               Sign in
             </Link>
           </p>

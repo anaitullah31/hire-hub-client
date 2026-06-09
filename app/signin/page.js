@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Card, Input } from "@heroui/react";
 import { authClient } from "@/app/lib/auth-client";
 
 export default function SigninPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const redirectTo = searchParams.get("redirect") || "/";
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -46,7 +49,7 @@ export default function SigninPage() {
       setSuccessMessage("Login successful!");
 
       setTimeout(() => {
-        router.push("/");
+        router.push(redirectTo);
       }, 1000);
     } catch (error) {
       setErrorMessage(error.message || "Something went wrong");
@@ -146,7 +149,7 @@ export default function SigninPage() {
         <p className="mt-6 text-center text-sm text-gray-400">
           Do not have an account?{" "}
           <Link
-            href="/signup"
+            href={`/signup?redirect=${redirectTo}`}
             className="font-medium text-violet-400 hover:text-violet-300"
           >
             Sign Up
