@@ -1,6 +1,9 @@
+import { getUserSession } from "@/app/lib/core/session";
 import {
   Bars,
   Bell,
+  Bookmark,
+  CreditCard,
   Envelope,
   Gear,
   House,
@@ -8,10 +11,44 @@ import {
   Person,
 } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
+import { Briefcase, Users } from "lucide-react";
 import Link from "next/link";
 
-export function DashboardSidebar() {
-  const navItems = [
+export async function DashboardSidebar() {
+  const user = await getUserSession();
+  const seekerNavLinks = [
+    {
+      icon: House,
+      href: "/dashboard/job-seaker",
+      label: "Dashboard",
+    },
+    {
+      icon: Magnifier,
+      href: "/dashboard/job-seaker/jobs",
+      label: "Jobs",
+    },
+    {
+      icon: Envelope,
+      href: "/dashboard/job-seaker/applications",
+      label: "Applications",
+    },
+    {
+      icon: Bookmark,
+      href: "/dashboard/job-seeker/saved-jobs",
+      label: "Saved Jobs",
+    },
+    {
+      icon: CreditCard,
+      href: "/dashboard/job-seeker/billings",
+      label: "Billings",
+    },
+    {
+      icon: Gear,
+      href: "/dashboard/job-seeker/settings",
+      label: "Settings",
+    },
+  ];
+  const recruiterNavLinks = [
     { icon: House, href: "/dashboard/recruiter", label: "Home" },
     { icon: Magnifier, href: "/dashboard/recruiter/jobs", label: "Jobs" },
     {
@@ -19,10 +56,53 @@ export function DashboardSidebar() {
       href: "/dashboard/recruiter/jobs/new",
       label: "Create A Job",
     },
-    { icon: Envelope, href: "/dashboard/recruiter/company", label: "Company Profile" },
+    {
+      icon: Envelope,
+      href: "/dashboard/recruiter/company",
+      label: "Company Profile",
+    },
     { icon: Person, href: "/dashboard/recruiter", label: "Profile" },
     { icon: Gear, href: "/dashboard/recruiter", label: "Settings" },
   ];
+  const adminNavLinks = [
+    {
+      icon: House,
+      href: "/dashboard/admin",
+      label: "Dashboard",
+    },
+    {
+      icon: Users,
+      href: "/dashboard/admin/users",
+      label: "Users",
+    },
+    {
+      icon: House,
+      href: "/dashboard/admin/companies",
+      label: "Companies",
+    },
+    {
+      icon: Briefcase,
+      href: "/dashboard/admin/jobs",
+      label: "Jobs",
+    },
+    {
+      icon: CreditCard,
+      href: "/dashboard/admin/payments",
+      label: "Payments",
+    },
+    {
+      icon: Gear,
+      href: "/dashboard/admin/settings",
+      label: "Settings",
+    },
+  ];
+  const navLinksMap = {
+    "job-seaker": seekerNavLinks,
+    recruiter: recruiterNavLinks,
+    admin: adminNavLinks,
+  };
+
+  const navItems = navLinksMap[user?.role];
 
   const navContent = (
     <nav className="flex flex-col gap-1">

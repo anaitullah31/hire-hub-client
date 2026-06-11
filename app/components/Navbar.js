@@ -20,6 +20,19 @@ export default function Navbar() {
     { label: "Pricing", href: "/plans" },
   ];
 
+  const dashboardLinks = {
+    "job-seaker": "/dashboard/job-seaker",
+    recruiter: "/dashboard/recruiter",
+    admin: "/dashboard/admin",
+  };
+
+  if (user?.email) {
+    navLinks.push({
+      label: "Dashboard",
+      href: dashboardLinks[user?.role || "job-seaker"],
+    });
+  }
+
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
 
