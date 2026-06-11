@@ -40,6 +40,8 @@ export default function SignupPage() {
     setErrorMessage("");
     setSuccessMessage("");
 
+    const plan = formData.role === "job-seaker" ? "seeker-free" : "recruiter-free";
+
     try {
       const { data, error } = await authClient.signUp.email({
         name: formData.name,
@@ -47,6 +49,7 @@ export default function SignupPage() {
         password: formData.password,
         image: formData.image,
         role: formData.role,
+        plan,
       });
 
       if (error) {

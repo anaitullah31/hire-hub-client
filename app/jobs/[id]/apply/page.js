@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import JobApply from "./JobApply";
 import { getApplicationsByApplicant } from "@/app/lib/api/applications";
 import Link from "next/link";
+import { getPlanById } from "@/app/lib/api/plans";
 
 const ApplyPage = async ({ params }) => {
   const { id } = await params;
@@ -16,7 +17,7 @@ const ApplyPage = async ({ params }) => {
     return (
       <div>
         <p>
-          Only Job seakers can apply ofr positions.Please sign in with a job
+          Only Job seakers can apply ofr positions. Please sign in with a job
           seaker accoutn to proceed futher
         </p>
       </div>
@@ -24,17 +25,15 @@ const ApplyPage = async ({ params }) => {
   }
   const applications = await getApplicationsByApplicant(user.id);
 
-  const plan = {
-    name: "Free",
-    maxApplicationsPerMonth: 3,
-  };
+  const plan = await getPlanById(user?.plan || "seeker-free");
 
   const job = await getJobById(id);
 
   return (
     <div>
       <h2>
-        You have applied so far: {applications.length} out of 3 this month
+        You have applied so far: {applications.length} out of{" "}
+        {plan.maxApplicationsPerMonth} this month
       </h2>
       <p>
         Purchase plan to apply for more positions.{" "}
